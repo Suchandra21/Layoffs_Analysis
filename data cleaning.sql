@@ -1,10 +1,10 @@
 -- DATA CLEANING
 -- 1) removing duplicates
 -- 2) standardizing data
--- 3)removing null or blanks
+-- 3)managing null or blanks
 -- 4) remove any columns and rows if required
 
--- REMOVING DUPLICATES************************************************************************************************************************
+-- *********************************************************REMOVING DUPLICATES*****************************************************
 select *from layoffs;
 create table layoffs_staging
 like layoffs;
@@ -52,7 +52,7 @@ select * from layoffs_staging2 where company="Casper";
 -- ------------------------------COMPLETED--------------------deletion of the duplicate values done-----------------------
 
 
--- STANDARDIZING DATA*************************************************************************************************
+-- *****************************************************STANDARDIZING DATA************************************************
 select distinct company,(trim(company))
 from layoffs_staging2;
 update layoffs_staging2
@@ -68,7 +68,7 @@ where industry like "Crypto%";
 update layoffs_staging2
 set industry="Crypto"
 where industry like "Crypto%";
--- -----------------------COMPLETED--------converting cryptocurrency company to crypto done----------------------
+-- -----------------------COMPLETED--------converting 'cryptocurrency' company to 'crypto' done----------------------
 select distinct country
 from layoffs_staging2
 order by 1;
@@ -79,20 +79,20 @@ select distinct country,trim(trailing'.' from  country)
 from layoffs_staging2;
 update layoffs_staging2
 set country=trim(trailing'.' from  country);
--- -----------COMPLETED--------------trimming the trailing dot from country done-------------------------
+-- -----------COMPLETED--------------trimming the trailing dot from 'country' done-------------------------
 select `date`,
 str_to_date(`date`,"%m/%d/%Y")
 from layoffs_staging2;
 update layoffs_staging2
 set `date`=str_to_date(`date`,"%m/%d/%Y");
 alter table layoffs_staging2
--- --------------FAILED----------converting the data type of date from text to date---------------------
+-- --------------FAILED----------converting the data type of 'date' from text to date---------------------
 modify `date` date;
 select* from layoffs_staging2;
--- --------------COMPLETED--------converting the data type of date from text to date-------------------
+-- --------------COMPLETED--------converting the data type of 'date' from text to date-------------------
 
 
--- REMOVING THE NULL AND THE BLANKS**********************************************************************************
+-- *********************************************REMOVING THE NULL AND THE BLANKS******************************************
  update layoffs_staging2
  set industry=null
  where industry='';
@@ -116,10 +116,10 @@ join layoffs_staging2 t2
 set t1.industry=t2.industry
 where t1.industry is null 
 and t2.industry is not null;
--- -------COMPLETED----removing the null values from the industry column where other records of the same company exixst----------
+-- -------COMPLETED----managing the null values from the industry column where other records of the same company exist----------
 
 
--- REMOVING ANY ROWS************************************************************************************************************
+-- *******************************************************REMOVING ANY ROWS**************************************************
 select  *
 from layoffs_staging2
 where total_laid_off is null
@@ -131,8 +131,8 @@ where total_laid_off is null
 -- ---------------------------------COMPLETED--------------------------------deleting rows done-----------------------------
 
 
--- REMOVING ANY COLUMN************************************************************************************************
+-- ********************************************************REMOVING ANY COLUMN**************************************************
 select * from layoffs_staging2;
 alter table layoffs_staging2
 drop column row_num;
--- ---------------------COMPPLETED----------------------deleting row_num done------------------------------------------
+-- ---------------------COMPLETED----------------------deleting 'row_num' done------------------------------------------
