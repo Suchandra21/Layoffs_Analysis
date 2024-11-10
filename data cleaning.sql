@@ -1,7 +1,7 @@
 -- DATA CLEANING
 -- 1) removing duplicates
 -- 2) standardizing data
--- 3)managing null or blanks
+-- 3) managing null or blanks
 -- 4) remove any columns and rows if required
 
 -- *********************************************************REMOVING DUPLICATES*****************************************************
